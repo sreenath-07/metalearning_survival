@@ -69,7 +69,7 @@ def do_final_learning(model, x_ftrain, ystatus_ftrain, y_ftrain, lr_inner, n_inn
         end=time.time()
         print("1 iteration time:", end-start)
         print ('Iteration', nn)
-        print ('AvgTrainML', loss.data[0])
+        print ('AvgTrainML', loss.data)
         
         
     return new_model
