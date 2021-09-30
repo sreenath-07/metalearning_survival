@@ -75,7 +75,7 @@ def do_base_eval(trained_model, x_test,y_test,ystatus_test):
                             
         loss=-torch.mean(torch.mul((theta - torch.log(torch.sum(torch.mul(exp_theta, R_matrix_batch),dim=1))), torch.reshape(ystatus_batch,[x_batch.shape[0]])))
                             
-        return loss.data[0],cind
+        return loss.data,cind
 
     
 
