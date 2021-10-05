@@ -143,7 +143,7 @@ def meta_learn(model, x_train, y_train, ystatus_train, x_val, y_val, ystatus_val
                 diff_next.append(temp)
                 
             diff=list(map(add, diff, diff_next) )
-        
+        print("DIFF", diff)
         diff_ave=[x/batch_n for x in diff]
         
         
