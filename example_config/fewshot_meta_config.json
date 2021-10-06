@@ -8,11 +8,11 @@
     "val_status": "sample_data/pretrainPanCan/ystatus_val.csv",
     "lr_inner": 0.01,
     "lr_outer": 0.0001,
-    "shots_n": 2,
-    "batch_n": 1,
+    "shots_n": 100,
+    "batch_n": 10,
     "n_inner": 5,
     "reg_scale": 0.1,
-    "iters": 1,
+    "iters": 10,
     "model_path": "model/"
 
  }

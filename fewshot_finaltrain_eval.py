@@ -60,8 +60,7 @@ def do_final_learning(model, x_ftrain, ystatus_ftrain, y_ftrain, lr_inner, n_inn
             theta=torch.reshape(theta,[x_batch.shape[0]])
 
             loss=-torch.mean(torch.mul((theta - torch.log(torch.sum(torch.mul(exp_theta, R_matrix_batch),dim=1))), torch.reshape(ystatus_batch,[x_batch.shape[0]])))
- 
-                                
+
             inner_optimizer.zero_grad()
             loss.backward()
             inner_optimizer.step()
