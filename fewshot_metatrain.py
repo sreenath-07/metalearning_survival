@@ -19,13 +19,13 @@ class DAPLModel(nn.Module):
         nn.Module.__init__(self)
         
         self.main = nn.Sequential(
-            nn.Linear(17176, 6000), 
+            nn.Linear(17176, 100),
             nn.ReLU(),
-            nn.Linear(6000, 2000),
+            nn.Linear(100, 50),
             nn.ReLU(),
-            nn.Linear(2000, 200),
+            nn.Linear(50, 20),
             nn.ReLU(),
-            nn.Linear(200, 1, bias=False)
+            nn.Linear(20, 1, bias=False)
         )
         
     def forward(self, x):
