@@ -8,7 +8,7 @@
     "val_status": "sample_data/pretrainPanCan/ystatus_val.csv",
     "lr_inner": 0.01,
     "lr_outer": 0.0001,
-    "shots_n": 20,
+    "shots_n": 20, // 100, but ensure that it's lesser than the sample size for using random.sample
     "batch_n": 10,
     "n_inner": 5,
     "reg_scale": 0.1,
