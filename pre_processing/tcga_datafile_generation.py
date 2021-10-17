@@ -79,11 +79,11 @@ def main(datatype_extension):
 ######## PIPELINE EXECUTION ########
 
 #### MICRORNA EXPRESSION DATA ####
-%cd /content/gdrive/My Drive/metalearning_survival/tcga_data/MicroRNA_Expression
+# %cd /content/gdrive/My Drive/metalearning_survival/tcga_data/MicroRNA_Expression
 microrna_expression_tcga = main("MicroRNA_")
 microrna_expression_tcga.to_csv("tcga_microrna_df.csv")
 
 #### PROTEIN EXPRESSION DATA ####
-%cd /content/gdrive/My Drive/metalearning_survival/tcga_data/Protein_RPPA
+# %cd /content/gdrive/My Drive/metalearning_survival/tcga_data/Protein_RPPA
 protein_expression_tcga = main("Protein_")
 protein_expression_tcga.to_csv("tcga_protein_df.csv")

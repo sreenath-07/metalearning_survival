@@ -176,8 +176,7 @@ parser.add_argument('--config', type=str, default='config.json', help='configura
 
 if __name__ == '__main__':
     
-    
-        args = parser.parse_args()
+
         with open(args.config) as f:
         	config = json.load(f)
 
