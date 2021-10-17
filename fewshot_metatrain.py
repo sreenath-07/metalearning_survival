@@ -19,11 +19,11 @@ class DAPLModel(nn.Module):
         nn.Module.__init__(self)
         
         self.main = nn.Sequential(
-            nn.Linear(17176, 100),
+            nn.Linear(336, 120),
             nn.ReLU(),
-            nn.Linear(100, 50),
+            nn.Linear(120, 60),
             nn.ReLU(),
-            nn.Linear(50, 20),
+            nn.Linear(60, 20),
             nn.ReLU(),
             nn.Linear(20, 1, bias=False)
         )
