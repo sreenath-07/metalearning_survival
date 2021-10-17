@@ -175,11 +175,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
 
 if __name__ == '__main__':
-    
 
+        args = parser.parse_args()
         with open(args.config) as f:
         	config = json.load(f)
-
 
         LR_INNER=config['lr_inner']# 0.01
         LR_OUTER=config['lr_outer']# 0.0001
