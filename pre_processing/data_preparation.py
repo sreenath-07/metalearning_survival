@@ -1,6 +1,10 @@
+repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+
+
 import pandas as pd
-protein_expression_tcga = pd.read_csv('/content/gdrive/My Drive/metalearning_survival/pre_processing/tcga_protein_df.csv', index_col=0)
-microrna_expression_tcga =  pd.read_csv('/content/gdrive/My Drive/metalearning_survival/pre_processing/tcga_microrna_df.csv',index_col=0)
+protein_expression_tcga = pd.read_csv(repo_path+'pre_processing/tcga_protein_df.csv', index_col=0)
+microrna_expression_tcga =  pd.read_csv(repo_path+'pre_processing/tcga_microrna_df.csv',index_col=0)
+
 
 def list_of_features(df):
   feature_list = df.columns.tolist()
@@ -63,12 +67,13 @@ def split_train_test(df,title,metastage):
   ytime_holdout = y_holdout["time"]
   ystatus_holdout = y_holdout["status"]
 
-  if metastage == "metatrain":
-    path = "/content/gdrive/My Drive/metalearning_survival/sample_data/pretrainPanCan/" + title
-    write_datasets_metatrain(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout)
+  if metastage == "metatrain":  
+    path = repo_path + "sample_data/pretrainPanCan/" + title
+    write_datasets_metatrain(path, X_train, X_holdout,ytime_train, ystatus_train,ytime_holdout,ystatus_holdout)
   else:
-    path = "/content/gdrive/My Drive/metalearning_survival/sample_data/finetuneTarget/" + title
+    path = repo_path + "sample_data/finetuneTarget/" + title
     write_datasets_metatest(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout)
+
 
 def write_datasets_metatrain(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
   X_train.to_csv(path+"_feature_train.csv",index=False)
