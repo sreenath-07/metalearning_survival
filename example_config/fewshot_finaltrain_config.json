@@ -13,6 +13,6 @@
     "select_sample": 1,
     "model_path": "model/",
     "output_path": "csv_output/",
-    "restore_series": "metamodel_lrinner0.01lrouter0.0001shotsn100batchn10ninner5regscale0.1iter10",
+    "restore_series": "model/metamodel_lrinner0.01lrouter0.0001shotsn100batchn10ninner5regscale0.1iter800",
     "final_params_save" : "1-0.001-2-2-0.1-20"
  }
