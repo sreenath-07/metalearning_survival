@@ -67,7 +67,7 @@ def split_train_test(df,title,metastage):
   ytime_holdout = y_holdout["time"]
   ystatus_holdout = y_holdout["status"]
 
-  if metastage == "metatrain":  
+  if metastage == "metatrain":
     path = repo_path + "sample_data/pretrainPanCan/" + title
     write_datasets_metatrain(path, X_train, X_holdout,ytime_train, ystatus_train,ytime_holdout,ystatus_holdout)
   else:
