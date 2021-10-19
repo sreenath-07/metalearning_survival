@@ -39,14 +39,18 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-
-        x_batch=Variable(torch.FloatTensor(x_batch),requires_grad = True )
+        x_batch = torch.FloatTensor(x_batch)
         x_batch = x_batch.to(device)
-        R_matrix_batch=Variable(torch.FloatTensor(R_matrix_batch),requires_grad = True )
+        x_batch=Variable(x_batch,requires_grad=True )
+
+        R_matrix_batch = torch.FloatTensor(R_matrix_batch)
         R_matrix_batch = R_matrix_batch.to(device)
-        ystatus_batch=Variable(torch.FloatTensor(ystatus_batch),requires_grad = True )
+        R_matrix_batch=Variable(R_matrix_batch,requires_grad = True )
+
+        ystatus_batch = torch.FloatTensor(ystatus_batch)
         ystatus_batch = ystatus_batch.to(device)
-        
+        ystatus_batch=Variable(ystatus_batch,requires_grad = True )
+
         theta=new_model(x_batch)               
         exp_theta=torch.reshape(torch.exp(theta),[x_batch.shape[0]])
         theta=torch.reshape(theta,[x_batch.shape[0]])
@@ -62,7 +66,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
 
 def do_base_eval(trained_model, x_test,y_test,ystatus_test):
 
-        x_batch=torch.FloatTensor(x_test)
+        x_batch = torch.FloatTensor(x_test)
         x_batch = x_batch.to(device)
         pred_batch_test=trained_model(x_batch)              
         cind=CIndex(pred_batch_test, y_test, np.asarray(ystatus_test))
