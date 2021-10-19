@@ -7,7 +7,7 @@
     "test_status": "sample_data/finetuneTarget/LUAD_ystatus_holdout.csv",
     "final_n_inner": 1,
     "final_lr_inner": 0.001,
-    "final_shots_n": 2,
+    "final_shots_n": 1,
     "final_iter": 10,
     "final_reg_scale": 0.1,
     "select_sample": 1,
