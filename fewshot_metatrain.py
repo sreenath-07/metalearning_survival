@@ -46,7 +46,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
         x_batch=Variable(x_batch,requires_grad=True )
 
         R_matrix_batch = torch.FloatTensor(R_matrix_batch)
-        R_matrix_batch = R_matrix_batch.to(device)
+        R_matrix_batch = R_matrix_batch.to(device, non_blocking=True))
         R_matrix_batch=Variable(R_matrix_batch,requires_grad = True )
 
         ystatus_batch = torch.FloatTensor(ystatus_batch)
@@ -69,7 +69,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
 def do_base_eval(trained_model, x_test,y_test,ystatus_test):
 
         x_batch = torch.FloatTensor(x_test)
-        x_batch = x_batch.to(device)
+        x_batch = x_batch.to(device, non_blocking=True)
         pred_batch_test=trained_model(x_batch)              
         cind=CIndex(pred_batch_test, y_test, np.asarray(ystatus_test))
         
