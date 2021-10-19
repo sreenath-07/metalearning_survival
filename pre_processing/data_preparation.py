@@ -72,7 +72,7 @@ def scale_removenan_fillnan(df):
 
   df.dropna(subset = ["time", "status"], inplace=True) #Removing na cells for time and stauts by Subsetting rows in pandas
   df = df.loc[df['time'] != 0]
-  df.dropna(how='all') #df.dropna(thresh=300)
+  df.dropna()#(how='all') #df.dropna(thresh=300)
 
   ##Normalization using MinMaxScaler in range of (-1,1)
   feature_list = list_of_features(df)
@@ -80,8 +80,8 @@ def scale_removenan_fillnan(df):
   df[feature_list] = scaler.fit_transform(df[feature_list])
 
   #df[feature_list] = minmax_scale(df[feature_list])
-  print("Number of rows without missing cells", df.shape[0] - df.dropna().shape[0])
-  df = df.fillna(df.mean())
+  # print("Number of rows without missing cells", df.shape[0] - df.dropna().shape[0])
+  # df = df.fillna(df.mean())
   return df
 
   ###Option from previous work
@@ -99,7 +99,7 @@ def main():
 
   print(protein_expression_tcga.shape)
   protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
-  print(protein_expression_tcga.shape)
+  protein_expression_tcga.to_csv("protein_expression_tcga.csv")
 
   ###TODO: Index has duplicate values??? Cross-check the MicroRNA Dataframe
   # microrna_expression_tcga.shape
