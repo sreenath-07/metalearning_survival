@@ -180,7 +180,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("DEVICE---------", device)
-# torch.set_default_tensor_type(torch.cuda.FloatTensor)
+torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 if __name__ == '__main__':
 
