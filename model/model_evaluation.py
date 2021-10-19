@@ -1,0 +1,1 @@
+model = torch.load("800_iterations_pancan_v1.pt")
