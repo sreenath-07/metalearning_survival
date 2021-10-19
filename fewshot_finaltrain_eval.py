@@ -80,7 +80,7 @@ def CIndex(pred, ytime_test, ystatus_test):
     ystatus_test = np.asarray(ystatus_test, dtype=bool)
     theta = pred
     for i in range(N_test):
-        if ystatus_test[i] == 1:
+        if ystatus_test[i] == 1: #If alive
             for j in range(N_test):
                 if ytime_test[j] > ytime_test[i]:
                     total = total + 1
