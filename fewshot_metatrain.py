@@ -42,7 +42,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     
     for i in range(n_inner):
         x_batch = torch.FloatTensor(x_batch)
-        # x_batch = x_batch.to(device)
+        x_batch = x_batch.to(device)
         x_batch=Variable(x_batch,requires_grad=True )
 
         R_matrix_batch = torch.FloatTensor(R_matrix_batch)
