@@ -1,53 +1,18 @@
 repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
 
-import pandas as pd
-protein_expression_tcga = pd.read_csv(repo_path+'pre_processing/tcga_protein_df.csv', index_col=0)
-microrna_expression_tcga =  pd.read_csv(repo_path+'pre_processing/tcga_microrna_df.csv',index_col=0)
+def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
+  X_train.to_csv(path+"_feature_train.csv",index=False)
+  ytime_train.to_csv(path+"_ytime_train.csv",index=False)
+  ystatus_train.to_csv(path+"_ystatus_train.csv",index=False)
 
-def list_of_features(df):
-  feature_list = df.columns.tolist()
-  feature_list.remove("time")
-  feature_list.remove("status")
-  feature_list.remove("cancer_type")
-  return feature_list
-
-def scale_removenan_fillnan(df):
-  ##Normalizing the data using min-max scaling
-  from sklearn.preprocessing import minmax_scale
-
-  feature_list = list_of_features(df)
-  df[feature_list] = minmax_scale(df[feature_list])
-  df.dropna(subset = ["time", "status"], inplace=True) #Removing na cells for time and stauts by Subsetting rows in pandas
-  df = protein_expression_tcga.loc[df['time'] != 0]
-  df.dropna(how='all')
-  # df.dropna(thresh=300)
-
-  df = df.fillna(df.mean())
-  return df
-
-print(protein_expression_tcga.shape)
-protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
-print(protein_expression_tcga.shape)
-
-###TODO: Index has duplicate values??? Cross-check the MicroRNA Dataframe
-
-# microrna_expression_tcga.shape
-# microrna_feature_list = list_of_features(microrna_expression_tcga)
-# microrna_expression_tcga = scale_remove_nan(microrna_expression_tcga, microrna_feature_list)
-# microrna_expression_tcga.shape
-
-###Option from previous work
-# from sklearn.preprocessing import StandardScaler
-# counts_data = protein_expression_tcga[feature_list].T
-# scaler = StandardScaler()
-# scaler.fit(counts_data)
-# scaled_data = scaler.transform(counts_data)
-# scaled_data.shape
-
-###Splitting the Data into meta-traina and test and further into 80:20
-from sklearn.model_selection import train_test_split
+  X_holdout.to_csv(path+"_feature_"+final_stage+".csv",index=False) ##For the metatrain stage the holdout is what is used for validation
+  ytime_holdout.to_csv(path+"_ytime_"+final_stage+".csv",index=False)
+  ystatus_holdout.to_csv(path+"_ystatus"+final_stage+".csv",index=False)
 
 def split_train_test(df,title,metastage):
+  ###Splitting the Data into meta-traina and test and further into 80:20
+  from sklearn.model_selection import train_test_split
+
   df.drop('cancer_type', axis=1, inplace=True)
   feature_list = df.columns.tolist()
   feature_list.remove("time")
@@ -65,46 +30,83 @@ def split_train_test(df,title,metastage):
 
   if metastage == "metatrain":
     path = repo_path + "sample_data/pretrainPanCan/" + title
-    write_datasets_metatrain(path, X_train, X_holdout,ytime_train, ystatus_train,ytime_holdout,ystatus_holdout)
+    final_stage = "val"
   else:
     path = repo_path + "sample_data/finetuneTarget/" + title
-    write_datasets_metatest(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout)
+    final_stage = "holdout"
 
-def write_datasets_metatrain(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
-  X_train.to_csv(path+"_feature_train.csv",index=False)
-  ytime_train.to_csv(path+"_ytime_train.csv",index=False)
-  ystatus_train.to_csv(path+"_ystatus_train.csv",index=False)
+  write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout)
 
-  X_holdout.to_csv(path+"_feature_val.csv",index=False) ##For the metatrain stage the holdout is what is used for validation
-  ytime_holdout.to_csv(path+"_ytime_val.csv",index=False)
-  ystatus_holdout.to_csv(path+"_ystatus_val.csv",index=False)
+def create_metatrain_metatest_data(df):
+  # Test Cancer - All except for GBM, LGG, LUAD, LUSC, HNSC, MESO
+  exclude_list = ["GBM", "LGG", "LUAD", "LUSC", "HNSC", "MESO"]
+  meta_train = df.drop(df.index[df['cancer_type'].isin(exclude_list)])
 
-def write_datasets_metatest(path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
-  X_train.to_csv(path+"_feature_train.csv",index=False)
-  ytime_train.to_csv(path+"_ytime_train.csv",index=False)
-  ystatus_train.to_csv(path+"_ystatus_train.csv",index=False)
+  # Target Cancer types -  20 samples each of (GBB, LGG, LUAD, LUSC, HNSC) , All samples of MESO
+  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=20)
+  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=20)
+  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=20)
+  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=20)
+  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=20)
+  meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
 
-  X_holdout.to_csv(path+"_feature_holdout.csv",index=False)
-  ytime_holdout.to_csv(path+"_ytime_holdout.csv",index=False)
-  ystatus_holdout.to_csv(path+"_ystatus_holdout.csv",index=False)
+  split_train_test(meta_train, "protein_pancan_v1", "metatrain")
+  split_train_test(meta_test_MESO, "MESO", "metatest")
+  split_train_test(meta_test_GBM, "GBM", "metatest")
+  split_train_test(meta_test_LGG, "LGG", "metatest")
+  split_train_test(meta_test_LUAD, "LUAD", "metatest")
+  split_train_test(meta_test_LUSC, "LUSC", "metatest")
+  split_train_test(meta_test_HNSC, "HNSC", "metatest")
 
-#Test Cancer - All except for GBM, LGG, LUAD, LUSC, HNSC, MESO
-exclude_list = ["GBM", "LGG", "LUAD", "LUSC", "HNSC", "MESO"]
-meta_train = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'].isin(exclude_list)])
+def list_of_features(df):
+  feature_list = df.columns.tolist()
+  feature_list.remove("time")
+  feature_list.remove("status")
+  feature_list.remove("cancer_type")
+  return feature_list
 
-#Target Cancer types -  20 samples each of (GBB, LGG, LUAD, LUSC, HNSC) , All samples of MESO
-meta_test_GBM = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "GBM"]).sample(n = 20)
-meta_test_LGG = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "LGG"]).sample(n = 20)
-meta_test_LUAD = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "LUAD"]).sample(n = 20)
-meta_test_LUSC = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "LUSC"]).sample(n = 20)
-meta_test_HNSC = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "HNSC"]).sample(n = 20)
+def scale_removenan_fillnan(df):
+  ##Normalizing the data using min-max scaling
+  from sklearn.preprocessing import minmax_scale
+  from sklearn.preprocessing import MinMaxScaler
 
-meta_test_MESO = protein_expression_tcga.drop(protein_expression_tcga.index[protein_expression_tcga['cancer_type'] != "MESO"])
+  df.dropna(subset = ["time", "status"], inplace=True) #Removing na cells for time and stauts by Subsetting rows in pandas
+  df = protein_expression_tcga.loc[df['time'] != 0]
+  df.dropna(how='all') #df.dropna(thresh=300)
 
-split_train_test(meta_train, "protein_pancan_v1", "metatrain")
-split_train_test(meta_test_MESO, "MESO", "metatest")
-split_train_test(meta_test_GBM, "GBM", "metatest")
-split_train_test(meta_test_LGG, "LGG", "metatest")
-split_train_test(meta_test_LUAD, "LUAD", "metatest")
-split_train_test(meta_test_LUSC, "LUSC", "metatest")
-split_train_test(meta_test_HNSC, "HNSC", "metatest")
+  ##Normalization using MinMaxScaler in range of (-1,1)
+  feature_list = list_of_features(df)
+  scaler = MinMaxScaler(feature_range=(-1,1))
+  df[feature_list] = scaler.fit_transform(df[feature_list])
+
+  #df[feature_list] = minmax_scale(df[feature_list])
+  print("Number of rows without missing cells", df.shape[0] - df.dropna().shape[0])
+  df = df.fillna(df.mean())
+  return df
+
+  ###Option from previous work
+  # from sklearn.preprocessing import StandardScaler
+  # counts_data = protein_expression_tcga[feature_list].T
+  # scaler = StandardScaler()
+  # scaler.fit(counts_data)
+  # scaled_data = scaler.transform(counts_data)
+  # scaled_data.shape
+
+def main():
+  import pandas as pd
+  protein_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_protein_df.csv', index_col=0)
+  microrna_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_microrna_df.csv', index_col=0)
+
+  print(protein_expression_tcga.shape)
+  protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
+  print(protein_expression_tcga.shape)
+
+  ###TODO: Index has duplicate values??? Cross-check the MicroRNA Dataframe
+  # microrna_expression_tcga.shape
+  # microrna_feature_list = list_of_features(microrna_expression_tcga)
+  # microrna_expression_tcga = scale_remove_nan(microrna_expression_tcga, microrna_feature_list)
+  # microrna_expression_tcga.shape
+
+  # create_metatrain_metatest_data(protein_expression_tcga)
+
+main()
