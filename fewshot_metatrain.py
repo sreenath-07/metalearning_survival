@@ -178,7 +178,7 @@ def meta_learn(model, x_train, y_train, ystatus_train, x_val, y_val, ystatus_val
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("DEVICE---------", device)
 torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
