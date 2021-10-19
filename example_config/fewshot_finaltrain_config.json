@@ -1,5 +1,5 @@
 {
-    "train_feature": "sample_data/finetuneTarget/LGG_feature_train.csv",
+    "train_feature": "sample_data/finetuneTarget/LUAD_feature_train.csv",
     "train_time": "sample_data/finetuneTarget/LUAD_ytime_train.csv",
     "train_status": "sample_data/finetuneTarget/LUAD_ystatus_train.csv",
     "test_feature": "sample_data/finetuneTarget/LUAD_feature_holdout.csv",
