@@ -50,7 +50,7 @@ def do_final_learning(model, x_ftrain, ystatus_ftrain, y_ftrain, lr_inner, n_inn
                 R_matrix_batch[i,j] = y_batch[j] >= y_batch[i]            
                    
         for i in range(n_inner):
-    
+
             x_batch=Variable(torch.FloatTensor(x_batch),requires_grad = True )
             R_matrix_batch=Variable(torch.FloatTensor(R_matrix_batch),requires_grad = True )
             ystatus_batch=Variable(torch.FloatTensor(ystatus_batch),requires_grad = True )
@@ -124,8 +124,6 @@ if __name__ == '__main__':
         RESTORE_SERIES=config['restore_series']
         SAVE_PARAMS=config['final_params_save']
 
-
-        
         output_path=config['output_path']
         model_path=config['model_path']
         x_ftrain = np.loadtxt(fname=config['train_feature'],delimiter=",",skiprows=1)          
@@ -155,6 +153,7 @@ if __name__ == '__main__':
             CI_list.append(CI)
             score_test_list.append(score_test.data.numpy().reshape(score_test.shape[0],))
 
-        print(CI_list)
+        print("score_test_list: ", score_test_list)
+        print("CI_list: ", CI_list)
         np.savetxt(output_path+RESTORE_SERIES+"_"+SAVE_PARAMS+"_testCI.csv", np.asarray(CI_list), delimiter=",")
         
