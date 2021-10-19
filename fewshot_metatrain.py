@@ -13,6 +13,8 @@ import time
 import argparse
 import json
 
+torch.set_default_tensor_type(torch.cuda.FloatTensor)
+
 class DAPLModel(nn.Module):
     
     def __init__(self):
@@ -39,9 +41,9 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-        # x_batch = torch.FloatTensor(x_batch)
+        x_batch = torch.FloatTensor(x_batch)
         # x_batch = x_batch.to(device)
-        x_batch=Variable(torch.FloatTensor(x_batch),requires_grad=True ).cuda()
+        x_batch=Variable(x_batch,requires_grad=True )
 
         R_matrix_batch = torch.FloatTensor(R_matrix_batch)
         R_matrix_batch = R_matrix_batch.to(device)
@@ -178,7 +180,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("DEVICE---------", device)
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
+# torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 if __name__ == '__main__':
 
