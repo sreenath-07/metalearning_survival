@@ -47,10 +47,10 @@ class DAPLModel(nn.Module):
     def forward(self, x):
         return self.main(x)
 
-model = DAPLModel()
-model.load_state_dict(torch.load("800_iterations_pancan_v1.pt"))
-# model = torch.load("800_iterations_pancan_v1.pt")
-print(model.eval())
+# model = DAPLModel()
+# model.load_state_dict(torch.load("800_iterations_pancan_v1.pt"))
+# # model = torch.load("800_iterations_pancan_v1.pt")
+# print(model.eval())
 
 # evaluate the model
 def evaluate_model(test_dl, model):
