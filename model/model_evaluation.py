@@ -32,8 +32,8 @@ class DAPLModel(nn.Module):
         return self.main(x)
 
 model = DAPLModel()
-# model.load_state_dict(torch.load("800_iterations_pancan_v1.pt"))
-model = torch.load("800_iterations_pancan_v1.pt")
+model.load_state_dict(torch.load("800_iterations_pancan_v1.pt"))
+# model = torch.load("800_iterations_pancan_v1.pt")
 print(model.eval())
 
 
