@@ -71,7 +71,7 @@ def scale_removenan_fillnan(df):
   from sklearn.preprocessing import MinMaxScaler
 
   df.dropna(subset = ["time", "status"], inplace=True) #Removing na cells for time and stauts by Subsetting rows in pandas
-  df = protein_expression_tcga.loc[df['time'] != 0]
+  df = df.loc[df['time'] != 0]
   df.dropna(how='all') #df.dropna(thresh=300)
 
   ##Normalization using MinMaxScaler in range of (-1,1)
