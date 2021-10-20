@@ -8,7 +8,7 @@ def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_t
 
   X_holdout.to_csv(path+"_feature_"+final_stage+".csv",index=False) ##For the metatrain stage the holdout is what is used for validation
   ytime_holdout.to_csv(path+"_ytime_"+final_stage+".csv",index=False)
-  ystatus_holdout.to_csv(path+"_ystatus"+final_stage+".csv",index=False)
+  ystatus_holdout.to_csv(path+"_ystatus_"+final_stage+".csv",index=False)
 
 def split_train_test(df,title,metastage):
   ###Splitting the Data into meta-traina and test and further into 80:20
