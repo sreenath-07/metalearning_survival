@@ -1,5 +1,5 @@
-# repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
-repo_path = "/home/amandal36/sreenath/metalearning_survival/"
+repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+# repo_path = "/home/amandal36/sreenath/metalearning_survival/"
 
 def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
   X_train.to_csv(path+"_feature_train.csv",index=False)

@@ -12,7 +12,7 @@
     "batch_n": 10,
     "n_inner": 5,
     "reg_scale": 0.1,
-    "iters": 800,
+    "iters": 100,
     "model_path": "model/"
 
  }
