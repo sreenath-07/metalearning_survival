@@ -96,7 +96,7 @@ def scale_removenan_fillnan(df):
 def main():
   import pandas as pd
   protein_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_protein_df.csv', index_col=0)
-  microrna_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_microrna_df.csv', index_col=0)
+  # microrna_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_microrna_df.csv', index_col=0)
 
   print(protein_expression_tcga.shape)
   protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
