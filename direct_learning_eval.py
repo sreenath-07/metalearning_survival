@@ -29,7 +29,8 @@ def predict (FEATURE_SIZE,ROOT_PATH, CHECKPOINT_NAME, x_test,y_test, ystatus_tes
 
     CHECKPOINT_FILE=ROOT_PATH+CHECKPOINT_NAME
     np.set_printoptions(threshold=np.inf)
-    tf.reset_default_graph()
+    # tf.reset_default_graph()
+    tf.compat.v1.reset_default_graph()
     
     #regularizer = tf.contrib.layers.l2_regularizer(scale=REG_SCALE)
     x = tf.placeholder(tf.float32,[None,FEATURE_SIZE], name='input_data')
@@ -88,12 +89,9 @@ if __name__ == '__main__':
         with open(args.config) as f:
         	config = json.load(f)
 
-    
-
         FEATURE_SIZE=config['feature_size']
         RESTORE_SERIES=config['restore_series']
         SELECT_SIZE=config['select_size']
-
           
         model_path=config['model_path']
         x_train = np.loadtxt(fname=config['train_feature'],delimiter=",",skiprows=1)          
@@ -103,15 +101,13 @@ if __name__ == '__main__':
         y_test = np.loadtxt(fname=config['test_time'],delimiter=",",skiprows=1)        
         ystatus_test = np.loadtxt(fname=config['test_status'],delimiter=",",skiprows=1) 
 
-        
         x_test = np.array(x_test)
         y_test=np.array(y_test).reshape((-1,1))
         ystatus_test=np.array(ystatus_test).reshape((-1,1))        
         x_train = np.array(x_train)
         y_train=np.array(y_train).reshape((-1,1))
         ystatus_train=np.array(ystatus_train).reshape((-1,1))          
-        
-                
+
         CI_list=[]   
         score_train_list=[]
         score_test_list=[]

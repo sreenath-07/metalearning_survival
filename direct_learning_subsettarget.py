@@ -63,7 +63,7 @@ def CIndex(pred, ytime_test, ystatus_test):
 def train(y_holdout, x_holdout, ystatus_holdout, y_train, x_train, ystatus_train, checkpoint):
     
     np.set_printoptions(threshold=np.inf)
-    tf.reset_default_graph()
+    tf.compat.v1.reset_default_graph()
     
     regularizer = tf.contrib.layers.l2_regularizer(scale=REG_SCALE)
     x = tf.placeholder(tf.float32,[None,FEATURE_SIZE], name='input_data')
@@ -79,8 +79,8 @@ def train(y_holdout, x_holdout, ystatus_holdout, y_train, x_train, ystatus_train
     dense_drop3 = tf.nn.dropout(dense_layer3, keep_prob=keep_prob)
     theta = tf.layers.dense(inputs=dense_drop3, units=1, activation=None,use_bias=False,kernel_regularizer=regularizer)
     theta=tf.reshape(theta,[-1])
-    exp_theta=tf.exp(theta) 
-    
+    exp_theta=tf.exp(theta)
+
     
     
     loss=-tf.reduce_mean(tf.multiply((theta - tf.log(tf.reduce_sum(tf.multiply(exp_theta , R_matrix),axis=1))), tf.reshape(ystatus,[-1]))) 
