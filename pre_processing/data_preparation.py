@@ -1,4 +1,5 @@
-repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+# repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+repo_path = "/home/amandal36/sreenath/metalearning_survival/"
 
 def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
   X_train.to_csv(path+"_feature_train.csv",index=False)
@@ -81,7 +82,7 @@ def scale_removenan_fillnan(df):
 
   #df[feature_list] = minmax_scale(df[feature_list])
   # print("Number of rows without missing cells", df.shape[0] - df.dropna().shape[0])
-  # df = df.fillna(df.mean())
+  df = df.fillna(df.mean())
   return df
 
   ###Option from previous work
@@ -107,6 +108,6 @@ def main():
   # microrna_expression_tcga = scale_remove_nan(microrna_expression_tcga, microrna_feature_list)
   # microrna_expression_tcga.shape
 
-  # create_metatrain_metatest_data(protein_expression_tcga)
+  create_metatrain_metatest_data(protein_expression_tcga)
 
 main()
