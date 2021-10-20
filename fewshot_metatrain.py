@@ -34,8 +34,8 @@ class DAPLModel(nn.Module):
 def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_inner, reg_scale):
     
     new_model = DAPLModel()
-    # new_model = new_model.to(device)
-    new_model = new_model.cuda()
+    new_model = new_model.to(device)
+    # new_model = new_model.cuda()
     new_model.load_state_dict(model.state_dict())  # copy? looks okay
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
@@ -44,11 +44,11 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
         x_batch = x_batch.to(device)  #, non_blocking=True)
         x_batch=Variable(x_batch,requires_grad=True)
 
-        R_matrix_batch = torch.FloatTensor(R_matrix_batch)
+        R_matrix_batch = torch.cuda.FloatTensor(R_matrix_batch)
         R_matrix_batch = R_matrix_batch.to(device)
         R_matrix_batch=Variable(R_matrix_batch,requires_grad = True )
 
-        ystatus_batch = torch.FloatTensor(ystatus_batch)
+        ystatus_batch = torch.cuda.FloatTensor(ystatus_batch)
         ystatus_batch = ystatus_batch.to(device)
         ystatus_batch=Variable(ystatus_batch,requires_grad = True )
 
@@ -67,19 +67,19 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
 
 def do_base_eval(trained_model, x_test,y_test,ystatus_test):
 
-        x_batch = torch.FloatTensor(x_test)
+        x_batch = torch.cuda.FloatTensor(x_test)
         x_batch = x_batch.to(device, non_blocking=True)
         pred_batch_test=trained_model(x_batch)              
         cind=CIndex(pred_batch_test, y_test, np.asarray(ystatus_test))
         
-        ystatus_batch=torch.FloatTensor(ystatus_test)
+        ystatus_batch=torch.cuda.FloatTensor(ystatus_test)
         ystatus_batch = ystatus_batch.to(device)
 
         R_matrix_batch = np.zeros([y_test.shape[0], y_test.shape[0]], dtype=int)
         for i in range(y_test.shape[0]):
             for j in range(y_test.shape[0]):
                 R_matrix_batch[i,j] = y_test[j] >= y_test[i]  
-        R_matrix_batch=torch.FloatTensor(R_matrix_batch)
+        R_matrix_batch=torch.cuda.FloatTensor(R_matrix_batch)
         R_matrix_batch = R_matrix_batch.to(device)
         
         theta=trained_model(x_batch)               
