@@ -13,8 +13,6 @@ import time
 import argparse
 import json
 
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
-
 class DAPLModel(nn.Module):
     
     def __init__(self):
@@ -181,7 +179,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("DEVICE---------", device)
-# torch.set_default_tensor_type(torch.cuda.FloatTensor)
+torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 if __name__ == '__main__':
 
@@ -207,8 +205,8 @@ if __name__ == '__main__':
         
         print("Training size", x_train.shape[0])
         daplmodel = DAPLModel()
-        # daplmodel = daplmodel.to(device)
-        daplmodel = daplmodel.cuda()
+        daplmodel = daplmodel.to(device)
+        # daplmodel = daplmodel.cuda()
         meta_learn(model=daplmodel, x_train=x_train, y_train=y_train, ystatus_train=ystatus_train,
                    x_val=x_val, y_val=y_val, ystatus_val=ystatus_val,
                    iterations=ITER, lr_inner=LR_INNER, lr_outer=LR_OUTER, n_inner=N_INNER,
