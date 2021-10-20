@@ -40,9 +40,9 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-        x_batch = torch.FloatTensor(x_batch)
-        x_batch = x_batch.to(device, non_blocking=True)
-        x_batch=Variable(x_batch,requires_grad=True )
+        # x_batch = torch.FloatTensor(x_batch, device='cuda:0')
+        # x_batch = x_batch.to(device, non_blocking=True)
+        x_batch=Variable(torch.FloatTensor(x_batch),requires_grad=True, device='cuda:0' )
 
         R_matrix_batch = torch.FloatTensor(R_matrix_batch)
         R_matrix_batch = R_matrix_batch.to(device)
