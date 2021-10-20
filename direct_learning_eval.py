@@ -32,7 +32,7 @@ def predict (FEATURE_SIZE,ROOT_PATH, CHECKPOINT_NAME, x_test,y_test, ystatus_tes
     # tf.reset_default_graph()
     tf.compat.v1.reset_default_graph()
     
-    #regularizer = tf.contrib.layers.l2_regularizer(scale=REG_SCALE)
+    # regularizer = tf.contrib.layers.l2_regularizer(scale=REG_SCALE)
     x = tf.placeholder(tf.float32,[None,FEATURE_SIZE], name='input_data')
     ystatus=tf.placeholder(tf.float32,[None,1],name='ystatus')
     R_matrix= tf.placeholder(tf.float32,[None,None],name='R_matrix')

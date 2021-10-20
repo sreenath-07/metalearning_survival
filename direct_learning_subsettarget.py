@@ -65,7 +65,8 @@ def train(y_holdout, x_holdout, ystatus_holdout, y_train, x_train, ystatus_train
     np.set_printoptions(threshold=np.inf)
     tf.compat.v1.reset_default_graph()
     
-    regularizer = tf.contrib.layers.l2_regularizer(scale=REG_SCALE)
+    regularizer = tf.compat.v1.estimator.layers.l2_regularizer(scale=REG_SCALE)
+
     x = tf.placeholder(tf.float32,[None,FEATURE_SIZE], name='input_data')
     ystatus=tf.placeholder(tf.float32,[None,1],name='ystatus')
     R_matrix= tf.placeholder(tf.float32,[None,None],name='R_matrix')
