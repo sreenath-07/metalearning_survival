@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import random 
-from torch import nn
+from torch import nn, cuda
 from torch.autograd import Variable
 import pandas as pd
 from operator import add
@@ -29,7 +29,7 @@ class DAPLModel(nn.Module):
         )
         
     def forward(self, x):
-        return self.main(x)
+        return self.main(x).cuda()
 
 def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_inner, reg_scale):
     
@@ -40,8 +40,8 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-        x_batch = torch.FloatTensor(x_batch, device='cuda:0')
-        # x_batch = x_batch.to(device, non_blocking=True)
+        x_batch = torch.FloatTensor(x_batch)
+        x_batch = x_batch.to(device)  #, non_blocking=True)
         x_batch=Variable(x_batch,requires_grad=True)
 
         R_matrix_batch = torch.FloatTensor(R_matrix_batch)
