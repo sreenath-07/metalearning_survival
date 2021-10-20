@@ -36,7 +36,8 @@ class DAPLModel(nn.Module):
 def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_inner, reg_scale):
     
     new_model = DAPLModel()
-    new_model = new_model.to(device)
+    # new_model = new_model.to(device)
+    new_model = new_model.cuda()
     new_model.load_state_dict(model.state_dict())  # copy? looks okay
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
@@ -206,7 +207,8 @@ if __name__ == '__main__':
         
         print("Training size", x_train.shape[0])
         daplmodel = DAPLModel()
-        daplmodel = daplmodel.to(device)
+        # daplmodel = daplmodel.to(device)
+        daplmodel = daplmodel.cuda()
         meta_learn(model=daplmodel, x_train=x_train, y_train=y_train, ystatus_train=ystatus_train,
                    x_val=x_val, y_val=y_val, ystatus_val=ystatus_val,
                    iterations=ITER, lr_inner=LR_INNER, lr_outer=LR_OUTER, n_inner=N_INNER,
