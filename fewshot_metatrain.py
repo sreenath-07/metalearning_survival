@@ -40,9 +40,9 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-        # x_batch = torch.cuda.FloatTensor(x_batch)
-        x_batch = torch.FloatTensor(x_batch, device=device)
-        # x_batch = x_batch.to(device)  #, non_blocking=True)
+        x_batch = torch.cuda.FloatTensor(x_batch)
+        # x_batch = torch.FloatTensor(x_batch, device=device)
+        x_batch = x_batch.to(device)  #, non_blocking=True)
         x_batch=Variable(x_batch,requires_grad=True)
 
         R_matrix_batch = torch.cuda.FloatTensor(R_matrix_batch)
@@ -68,8 +68,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
 
 def do_base_eval(trained_model, x_test,y_test,ystatus_test):
 
-        x_batch = torch.FloatTensor(x_test, device=device)
-        # torch.tensor(x)
+        x_batch = torch.cuda.FloatTensor(x_test) #, device=device)
         # x_batch = x_batch.to(device, non_blocking=True)
         pred_batch_test=trained_model(x_batch)              
         cind=CIndex(pred_batch_test, y_test, np.asarray(ystatus_test))
@@ -182,7 +181,7 @@ parser.add_argument('--config', type=str, default='config.json', help='configura
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("DEVICE---------", device)
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
+# torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 if __name__ == '__main__':
 
