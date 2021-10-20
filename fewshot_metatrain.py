@@ -42,15 +42,15 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     for i in range(n_inner):
         x_batch = torch.cuda.FloatTensor(x_batch)
         # x_batch = torch.FloatTensor(x_batch, device=device)
-        x_batch = x_batch.to(device)  #, non_blocking=True)
+        # x_batch = x_batch.to(device)  #, non_blocking=True)
         x_batch=Variable(x_batch,requires_grad=True)
 
         R_matrix_batch = torch.cuda.FloatTensor(R_matrix_batch)
-        R_matrix_batch = R_matrix_batch.to(device)
+        # R_matrix_batch = R_matrix_batch.to(device)
         R_matrix_batch=Variable(R_matrix_batch,requires_grad = True )
 
         ystatus_batch = torch.cuda.FloatTensor(ystatus_batch)
-        ystatus_batch = ystatus_batch.to(device)
+        # ystatus_batch = ystatus_batch.to(device)
         ystatus_batch=Variable(ystatus_batch,requires_grad = True )
 
         theta=new_model(x_batch)               
