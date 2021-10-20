@@ -19,17 +19,17 @@ class DAPLModel(nn.Module):
         nn.Module.__init__(self)
         
         self.main = nn.Sequential(
-            nn.Linear(336, 120),
+            nn.Linear(336, 120).cuda(),
             nn.ReLU(),
-            nn.Linear(120, 60),
+            nn.Linear(120, 60).cuda(),
             nn.ReLU(),
-            nn.Linear(60, 20),
+            nn.Linear(60, 20).cuda(),
             nn.ReLU(),
-            nn.Linear(20, 1, bias=False)
+            nn.Linear(20, 1, bias=False).cuda()
         )
         
     def forward(self, x):
-        return self.main(x).cuda()
+        return self.main(x)
 
 def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_inner, reg_scale):
     
