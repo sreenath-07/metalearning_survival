@@ -19,13 +19,13 @@ class DAPLModel(nn.Module):
         nn.Module.__init__(self)
         
         self.main = nn.Sequential(
-            nn.Linear(336, 120).cuda(),
+            nn.Linear(336, 120),
             nn.ReLU(),
-            nn.Linear(120, 60).cuda(),
+            nn.Linear(120, 60),
             nn.ReLU(),
-            nn.Linear(60, 20).cuda(),
+            nn.Linear(60, 20),
             nn.ReLU(),
-            nn.Linear(20, 1, bias=False).cuda()
+            nn.Linear(20, 1, bias=False)
         )
         
     def forward(self, x):
@@ -40,7 +40,7 @@ def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_
     inner_optimizer = torch.optim.SGD(new_model.parameters(), lr=lr_inner, weight_decay=reg_scale)
     
     for i in range(n_inner):
-        x_batch = torch.FloatTensor(x_batch)
+        x_batch = torch.cuda.FloatTensor(x_batch)
         x_batch = x_batch.to(device)  #, non_blocking=True)
         x_batch=Variable(x_batch,requires_grad=True)
 
