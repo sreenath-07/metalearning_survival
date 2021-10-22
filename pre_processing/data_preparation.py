@@ -44,11 +44,11 @@ def create_metatrain_metatest_data(df):
   meta_train = df.drop(df.index[df['cancer_type'].isin(exclude_list)])
 
   # Target Cancer types -  20 samples each of (GBB, LGG, LUAD, LUSC, HNSC) , All samples of MESO
-  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=20)
-  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=20)
-  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=20)
-  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=20)
-  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=20)
+  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=30)
+  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=30)
+  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=30)
+  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=30)
+  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=30)
   meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
 
   split_train_test(meta_train, "protein_pancan_v1", "metatrain")
