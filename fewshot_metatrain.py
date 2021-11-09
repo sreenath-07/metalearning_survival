@@ -13,9 +13,6 @@ import time
 import argparse
 import json
 
-global avg_cind, count
-avg_cind = 0
-count = 0
 
 class DAPLModel(nn.Module):
     
@@ -122,11 +119,14 @@ def CIndex(pred, ytime_test, ystatus_test):
 def meta_learn(model, x_train, y_train, ystatus_train, x_val, y_val, ystatus_val, iterations, lr_inner, lr_outer, n_inner, batch_n, reg_scale, shots_n):
     optimizer = torch.optim.Adam(model.parameters(), lr=lr_outer)
 
+    # global avg_cind, count
     train_metalosses =[]
     test_metalosses = []
     
     inner_optimizer_state = None
-    
+    avg_cind = 0
+    count = 0
+
     for t in range(iterations):
         
         start=time.time()
@@ -184,10 +184,12 @@ def meta_learn(model, x_train, y_train, ystatus_train, x_val, y_val, ystatus_val
         avg_cind += val_cind
         count += 1
         end=time.time()
+        test_metalosses.append(val_metaloss)
         print("1 iteration time:", end-start)
         print ('Iteration', t)
         print("CI Index", val_cind)
-        print("Metaloss",val_metaloss)
+        print("Metatest - Metaloss",val_metaloss)
+    print("Average CIndex = ", avg_cind/count)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
@@ -230,4 +232,4 @@ if __name__ == '__main__':
         filepath=model_path+"metamodel_lrinner"+str(LR_INNER)+"lrouter"+str(LR_OUTER)+"shotsn"+str(SHOTS_N)+"batchn"+str(BATCH_N)+"ninner"+str(N_INNER)+"regscale"+str(REG_SCALE)+"iter"+str(ITER)+".pt"
         torch.save(daplmodel.state_dict(), filepath)
         print(("Model saved in file: %s" % filepath))
-        print("Average CIndex = ", avg_cind/count)
+
