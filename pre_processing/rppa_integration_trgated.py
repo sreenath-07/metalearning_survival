@@ -3,8 +3,8 @@ trgated_path = "TRGAted_csv/"
 import os
 import pandas as pd
 
-repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
-
+# repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+repo_path = "/Users/sreenath/metalearning_survival/"
 def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
   X_train.to_csv(path+"_feature_train.csv",index=False)
   ytime_train.to_csv(path+"_ytime_train.csv",index=False)
@@ -22,6 +22,7 @@ def split_train_test(df,title,metastage):
   feature_list = df.columns.tolist()
   feature_list.remove("time")
   feature_list.remove("status")
+  feature_list.remove("patient")
 
   X = df[feature_list]
   y = df[["time","status"]]
@@ -44,24 +45,32 @@ def split_train_test(df,title,metastage):
 
 def create_metatrain_metatest_data(df):
   # Test Cancer - All except for GBM, LGG, LUAD, LUSC, HNSC, MESO
-  exclude_list = ["GBM", "LGG", "LUAD", "LUSC", "HNSC", "MESO"]
-  meta_train = df.drop(df.index[df['cancer_type'].isin(exclude_list)])
+  df = df[df.cancer_type != "GBM"]
+  df = df[df.cancer_type != "LGG"]
+  df = df[df.cancer_type != "LUAD"]
+  df = df[df.cancer_type != "LUSC"]
+  df = df[df.cancer_type != "HNSC"]
+  meta_train = df[df.cancer_type != "MESO"]
+
+  # exclude_list = ["GBM", "LGG", "LUAD", "LUSC", "HNSC", "MESO"]
+  # meta_train = df.drop(df.index[df['cancer_type'].isin(exclude_list)])
+  # print("META TRAIN SHAPE ------", meta_train.shape)
 
   # Target Cancer types -  20 samples each of (GBB, LGG, LUAD, LUSC, HNSC) , All samples of MESO
-  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=30)
-  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=30)
-  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=30)
-  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=30)
-  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=30)
-  meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
+  # meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=30)
+  # meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=30)
+  # meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=30)
+  # meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=30)
+  # meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=30)
+  # meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
 
   split_train_test(meta_train, "protein_pancan_trgated", "metatrain")
-  split_train_test(meta_test_MESO, "MESO_trgated", "metatest")
-  split_train_test(meta_test_GBM, "GBM_trgated", "metatest")
-  split_train_test(meta_test_LGG, "LGG_trgated", "metatest")
-  split_train_test(meta_test_LUAD, "LUAD_trgated", "metatest")
-  split_train_test(meta_test_LUSC, "LUSC_trgated", "metatest")
-  split_train_test(meta_test_HNSC, "HNSC_trgated", "metatest")
+  # split_train_test(meta_test_MESO, "MESO_trgated", "metatest")
+  # split_train_test(meta_test_GBM, "GBM_trgated", "metatest")
+  # split_train_test(meta_test_LGG, "LGG_trgated", "metatest")
+  # split_train_test(meta_test_LUAD, "LUAD_trgated", "metatest")
+  # split_train_test(meta_test_LUSC, "LUSC_trgated", "metatest")
+  # split_train_test(meta_test_HNSC, "HNSC_trgated", "metatest")
 
 def list_of_features(df):
   feature_list = df.columns.tolist()
@@ -86,7 +95,7 @@ def scale_removenan_fillnan(df):
   df = df.fillna(df.mean())
   return df
 
-def main():
+def create_combined_rppa_df():
   merge_df = []
 
   for file in os.listdir("TRGAted_csv/"):
@@ -111,11 +120,13 @@ def main():
   master_df = master_df.append(merge_df, sort=False)
   master_df.to_csv("pre_processing/tcga_protein_trgated_df.csv")
 
+def main():
+  create_combined_rppa_df()
   protein_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_protein_trgated_df.csv', index_col=0)
-
-  print(protein_expression_tcga.shape)
   protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
-  protein_expression_tcga.to_csv("protein_expression_tcga_trgated.csv")
+
+  # print(protein_expression_tcga.groupby(['cancer_type']).size())
+  # protein_expression_tcga.to_csv("protein_expression_tcga_trgated.csv")
   create_metatrain_metatest_data(protein_expression_tcga)
 
 main()
