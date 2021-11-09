@@ -3,8 +3,8 @@ trgated_path = "TRGAted_csv/"
 import os
 import pandas as pd
 
-# repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
-repo_path = "/Users/sreenath/metalearning_survival/"
+repo_path = r"C:\Users\ssrikrishnan6\Metalearning_Survival_Analysis\metalearning_survival/"
+# repo_path = "/Users/sreenath/metalearning_survival/"
 def write_datasets(final_stage, path, X_train, X_holdout, ytime_train, ystatus_train, ytime_holdout, ystatus_holdout):
   X_train.to_csv(path+"_feature_train.csv",index=False)
   ytime_train.to_csv(path+"_ytime_train.csv",index=False)
@@ -77,6 +77,7 @@ def list_of_features(df):
   feature_list.remove("time")
   feature_list.remove("status")
   feature_list.remove("cancer_type")
+  feature_list.remove('patient')
   return feature_list
 
 def scale_removenan_fillnan(df):
@@ -88,9 +89,9 @@ def scale_removenan_fillnan(df):
   df.dropna()#(how='all') #df.dropna(thresh=300)
 
   ##Normalization using MinMaxScaler in range of (-1,1)
-  # feature_list = list_of_features(df)
-  # scaler = MinMaxScaler(feature_range=(-1,1))
-  # df[feature_list] = scaler.fit_transform(df[feature_list])
+  feature_list = list_of_features(df)
+  scaler = MinMaxScaler(feature_range=(-1,1))
+  df[feature_list] = scaler.fit_transform(df[feature_list])
 
   df = df.fillna(df.mean())
   return df
