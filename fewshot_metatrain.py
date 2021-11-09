@@ -188,8 +188,9 @@ def meta_learn(model, x_train, y_train, ystatus_train, x_val, y_val, ystatus_val
         print("1 iteration time:", end-start)
         print ('Iteration', t)
         print("CI Index", val_cind)
-        print("Metatest - Metaloss",val_metaloss)
+
     print("Average CIndex = ", avg_cind/count)
+    print("Test Metalosses: ", test_metalosses)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='config.json', help='configuration json file')
