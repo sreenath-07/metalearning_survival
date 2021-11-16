@@ -21,8 +21,10 @@ def split_train_test(df,title,metastage):
 
   X = df[feature_list]
   y = df[["time","status"]]
-
-  X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, test_size=0.20, random_state=42)
+  if title == "MESO":
+    X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, test_size=0.20, random_state=42)
+  else:
+    X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, train_size=20, random_state=42)
 
   ytime_train = y_train["time"]
   ystatus_train = y_train["status"]
@@ -44,14 +46,14 @@ def create_metatrain_metatest_data(df):
   meta_train = df.drop(df.index[df['cancer_type'].isin(exclude_list)])
 
   # Target Cancer types -  20 samples each of (GBB, LGG, LUAD, LUSC, HNSC) , All samples of MESO
-  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"]).sample(n=30)
-  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"]).sample(n=30)
-  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"]).sample(n=30)
-  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"]).sample(n=30)
-  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"]).sample(n=30)
+  meta_test_GBM = df.drop(df.index[df['cancer_type'] != "GBM"])
+  meta_test_LGG = df.drop(df.index[df['cancer_type'] != "LGG"])
+  meta_test_LUAD = df.drop(df.index[df['cancer_type'] != "LUAD"])
+  meta_test_LUSC = df.drop(df.index[df['cancer_type'] != "LUSC"])
+  meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"])
   meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
 
-  split_train_test(meta_train, "protein_pancan_v1", "metatrain")
+  # split_train_test(meta_train, "protein_pancan_v1", "metatrain")
   split_train_test(meta_test_MESO, "MESO", "metatest")
   split_train_test(meta_test_GBM, "GBM", "metatest")
   split_train_test(meta_test_LGG, "LGG", "metatest")
@@ -98,7 +100,7 @@ def main():
   protein_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_protein_df.csv', index_col=0)
   # microrna_expression_tcga = pd.read_csv(repo_path + 'pre_processing/tcga_microrna_df.csv', index_col=0)
 
-  print(protein_expression_tcga.shape)
+  # print(protein_expression_tcga.shape)
   protein_expression_tcga = scale_removenan_fillnan(protein_expression_tcga)
   protein_expression_tcga.to_csv("protein_expression_tcga.csv")
 
