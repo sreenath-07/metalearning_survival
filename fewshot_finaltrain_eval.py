@@ -13,21 +13,39 @@ import time
 import argparse
 import json
 
+# class DAPLModel(nn.Module):
+#
+#     def __init__(self):
+#         nn.Module.__init__(self)
+#
+#         self.main = nn.Sequential(
+#             nn.Linear(336, 120),
+#             nn.ReLU(),
+#             nn.Linear(120, 60),
+#             nn.ReLU(),
+#             nn.Linear(60, 20),
+#             nn.ReLU(),
+#             nn.Linear(20, 1, bias=False)
+#         )
+#
+#     def forward(self, x):
+#         return self.main(x)
+
 class DAPLModel(nn.Module):
-    
+
     def __init__(self):
         nn.Module.__init__(self)
-        
+
         self.main = nn.Sequential(
-            nn.Linear(336, 120),
+            nn.Linear(17176, 6000),
             nn.ReLU(),
-            nn.Linear(120, 60),
+            nn.Linear(6000, 2000),
             nn.ReLU(),
-            nn.Linear(60, 20),
+            nn.Linear(2000, 200),
             nn.ReLU(),
-            nn.Linear(20, 1, bias=False)
+            nn.Linear(200, 1, bias=False)
         )
-        
+
     def forward(self, x):
         return self.main(x)
 
@@ -153,7 +171,7 @@ if __name__ == '__main__':
             CI_list.append(CI)
             score_test_list.append(score_test.data.numpy().reshape(score_test.shape[0],))
 
-        print("score_test_list: ", score_test_list)
+        # print("score_test_list: ", score_test_list)
         print("CI_list: ", CI_list)
         np.savetxt(output_path+RESTORE_SERIES+"_"+SAVE_PARAMS+"_testCI.csv", np.asarray(CI_list), delimiter=",")
         
