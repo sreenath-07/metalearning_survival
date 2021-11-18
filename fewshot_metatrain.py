@@ -13,41 +13,41 @@ import time
 import argparse
 import json
 
-# class DAPLModel(nn.Module):
-#
-#     def __init__(self):
-#         nn.Module.__init__(self)
-#
-#         self.main = nn.Sequential(
-#             nn.Linear(336, 120),
-#             nn.ReLU(),
-#             nn.Linear(120, 60),
-#             nn.ReLU(),
-#             nn.Linear(60, 20),
-#             nn.ReLU(),
-#             nn.Linear(20, 1, bias=False)
-#         )
-#
-#     def forward(self, x):
-#         return self.main(x)
-
 class DAPLModel(nn.Module):
 
     def __init__(self):
         nn.Module.__init__(self)
 
         self.main = nn.Sequential(
-            nn.Linear(17176, 6000),
+            nn.Linear(336, 120),
             nn.ReLU(),
-            nn.Linear(6000, 2000),
+            nn.Linear(120, 60),
             nn.ReLU(),
-            nn.Linear(2000, 200),
+            nn.Linear(60, 20),
             nn.ReLU(),
-            nn.Linear(200, 1, bias=False)
+            nn.Linear(20, 1, bias=False)
         )
 
     def forward(self, x):
         return self.main(x)
+
+# class DAPLModel(nn.Module):
+#
+#     def __init__(self):
+#         nn.Module.__init__(self)
+#
+#         self.main = nn.Sequential(
+#             nn.Linear(17176, 6000),
+#             nn.ReLU(),
+#             nn.Linear(6000, 2000),
+#             nn.ReLU(),
+#             nn.Linear(2000, 200),
+#             nn.ReLU(),
+#             nn.Linear(200, 1, bias=False)
+#         )
+#
+#     def forward(self, x):
+#         return self.main(x)
 
 def do_base_learning(model, x_batch, R_matrix_batch, ystatus_batch, lr_inner, n_inner, reg_scale):
     
