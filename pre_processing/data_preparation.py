@@ -53,7 +53,7 @@ def create_metatrain_metatest_data(df):
   meta_test_HNSC = df.drop(df.index[df['cancer_type'] != "HNSC"])
   meta_test_MESO = df.drop(df.index[df['cancer_type'] != "MESO"])
 
-  # split_train_test(meta_train, "protein_pancan_v1", "metatrain")
+  split_train_test(meta_train, "protein_pancan_v1", "metatrain")
   split_train_test(meta_test_MESO, "MESO", "metatest")
   split_train_test(meta_test_GBM, "GBM", "metatest")
   split_train_test(meta_test_LGG, "LGG", "metatest")
