@@ -21,7 +21,7 @@ def split_train_test(df,title,metastage):
 
   X = df[feature_list]
   y = df[["time","status"]]
-  if title == "MESO":
+  if title == "MESO" or title =="protein_pancan_v1":
     X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, test_size=0.20, random_state=42)
   else:
     X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, train_size=20, random_state=42)
